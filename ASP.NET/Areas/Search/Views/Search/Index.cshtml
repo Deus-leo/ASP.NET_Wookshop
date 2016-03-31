@@ -1,0 +1,191 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+
+@using Newtonsoft.Json.Linq
+@model dynamic
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="container">
+        <form method="get" action="Search">
+            <label>訂單查詢</label>
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        <label>訂單編號</label>
+                    </td>
+                    <td>
+                        <input type="text" name="OrderID" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>客戶名稱</label>
+                    </td>
+                    <td>
+                        <input type="text" name="User" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>負責員工</label>
+                    </td>
+                    <td>
+
+                        @Html.DropDownList("employeeName", (IEnumerable<SelectListItem>)ViewBag.empdata)
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>出貨公司</label>
+                    </td>
+                    <td>
+                        @Html.DropDownList("shipperdata", (IEnumerable<SelectListItem>)ViewBag.shipperdata)
+
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>訂購日期</label>
+                    </td>
+                    <td>
+                        <input type="date" name="OrderDate" />
+
+
+                        <label>出貨日期</label>
+
+                        <input type="date" name="SentDate" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>需要日期</label>
+                    </td>
+                    <td>
+                        <input type="date" name="NeedDate" />
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" class="btn btn-default" value="查詢">
+                        <input type="reset" class="btn btn-default" value="清除">
+                       <a href="/Insert/Insert"><input type="button" class="btn btn-default" value="新增訂單"></a>
+
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+    </div>
+
+
+
+    @if (ViewBag.Query_data != null)
+    {
+
+        <div class="container">
+            <label>查詢結果</label>
+            <table class="table table-striped">
+                <tr>
+                    <td>訂單編號</td>
+                    <td>客戶名稱</td>
+                    <td>訂購日期</td>
+
+                    <td>發貨日期</td>
+                    <td></td>
+
+                    <td></td>
+
+                </tr>
+                @foreach (var product in ViewBag.Query_data)
+                {
+
+
+                    <tr>
+                        <td>@product.OrderID</td>
+                        <td>@product.CompanyName</td>
+                        <td>@product.OrderDate</td>
+
+                        <td>@product.ShippedDate</td>
+                        <td><input type="button" class="btn btn-default" value="修改"></td>
+
+
+                        <td><input type="button" class="btn btn-default" value="刪除"></td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+    <div style="text-align:center; font-size:large">
+        <a href="@String.Format("Search?OrderID={0}&User={1}&employeeName={2}&shipperdata={3}&OrderDate={4}&SentDate={5}&NeedDate={6}&page={7}",
+            @Request.Params["OrderID"],
+        @Request.Params["User"],
+        @Request.Params["employeeName"],
+        @Request.Params["shipperdata"],
+        @Request.Params["OrderDate"],
+        @Request.Params["SentDate"],
+        @Request.Params["NeedDate"],
+        1
+
+
+
+        )">«</a>
+        @for (int i = 1; i <= ViewBag.maxpage; i++)
+        {
+
+            <a href="@String.Format("Search?OrderID={0}&User={1}&employeeName={2}&shipperdata={3}&OrderDate={4}&SentDate={5}&NeedDate={6}&page={7}",
+            @Request.Params["OrderID"],
+        @Request.Params["User"],
+        @Request.Params["employeeName"],
+        @Request.Params["shipperdata"],
+        @Request.Params["OrderDate"],
+        @Request.Params["SentDate"],
+        @Request.Params["NeedDate"],
+        i-1
+
+
+
+        )" style="text-align:center">@i</a>
+
+
+        }
+        <a href="@String.Format("Search?OrderID={0}&User={1}&employeeName={2}&shipperdata={3}&OrderDate={4}&SentDate={5}&NeedDate={6}&page={7}",
+            @Request.Params["OrderID"],
+        @Request.Params["User"],
+        @Request.Params["employeeName"],
+        @Request.Params["shipperdata"],
+        @Request.Params["OrderDate"],
+        @Request.Params["SentDate"],
+        @Request.Params["NeedDate"],
+        @ViewBag.maxpage-1
+
+
+
+        )">»</a>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+

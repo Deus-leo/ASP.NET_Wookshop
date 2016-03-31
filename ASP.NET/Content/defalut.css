@@ -1,0 +1,214 @@
+﻿
+body {
+ /*background-image: url(../img/gray.jpg);*/
+  overflow: scroll;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+a:hover {
+  color:#409ac3;
+}
+a:active{
+  color:red;
+}
+
+
+
+
+
+
+/* FOOTER */
+#footer {
+  padding: 10px;
+  color: #343434;
+  width: 960px;
+  margin: 0px auto;
+  text-align: right;
+}
+#content {
+  width: 960px;
+  margin: 10px auto;
+}
+
+@media screen and (max-width: 650px) {
+  img {
+    max-width: 100% !important;
+  }
+
+  #header {
+    margin-top:-2%;
+  }
+  #header .logo {
+    padding: 0px;
+    height: 48px;
+  }
+   #h1 {
+    font-size: 13px;
+  }
+  #navigation {
+    margin-top: 0px;
+  }
+  #navigation li {
+    width: 20%;
+    padding: 3px;
+    font-size: 12px;
+  }
+  #navigation li ul {
+    width: 20%;
+    margin: 0px;
+  }
+  #navigation li ul li {
+    font-size: 12px;
+  }
+
+  #content {
+    width: 100%;
+  }
+
+  #footer {
+    width: 100%;
+    font-size: 10px;
+  }
+}
+#notification {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  margin-left: -400px;
+  margin-top: -40px;
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 800px;
+  height: 120px;
+  text-align: center;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  letter-spacing: 3px;
+}
+#notification h2 {
+  margin: 0px;
+  padding: 0px;
+  font-size: 36px;
+  line-height: 80px;
+}
+#notification p {
+  font-size: 20px;
+  line-height: 40px;
+  margin-top: -10px;
+}
+
+
+@charset "UTF-8";
+#mark {
+  width: 100%;
+  margin: 0px auto;
+}
+#mark .item {
+  float: left;
+  background: white;
+  width: 230px;
+  margin: 0 5px 10px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+#mark .item .item-inner {
+  font-family:Microsoft JhengHei;
+  position: relative;
+}
+#mark .item .img {
+  height: 220px;
+  overflow: hidden;
+  background-position: center center;
+  background-size: cover;
+}
+#mark .item .img img {
+  width: 100%;
+  height: 100%;
+}
+#mark .item .item-name {
+  width: 100%;
+  top: 0;
+  position: absolute;
+  background: white;
+  padding: 5px;
+  transition: opacity .2s linear;
+  font-family:Microsoft JhengHei;
+  font-weight:bold;
+}
+#mark .item .title {
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  bottom: 0;
+  color: white;
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  transition: opacity .2s linear;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight:bold;
+  font-family:Microsoft JhengHei;
+}
+#mark .item:hover .item-name, #mark .item:hover .title {
+  opacity: 0;/*讓資料隱藏*/
+}
+#mark:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.leftSide {
+  float: left;
+}
+
+.rightSide {
+  float: right;
+}
+@media screen and (min-width:746px) and (max-width:942px)
+{
+	#mark .item {
+	  width: 26%;
+	}
+}
+@media screen and (min-width:715px) and (max-width:745px)
+{
+	#mark .item {
+	  width: 25%;
+	}
+}
+@media screen and (max-width: 790px) 
+{
+	#de_img{
+	width:420px;
+	height:380px;
+  }
+}
+@media screen  and (max-width: 650px) /*若瀏覽區域的寬度最大650像素，則下方的CSS描述就會立即被套用：*/
+{
+  #de_img{
+	width:380px;
+	height:350px;
+  }
+  #mark .item {
+    width: 47%;
+    margin: 1%;
+  }
+  .leftSide, .rightSide {
+    float: none;
+  }
+}
+@media screen and (max-width: 490px) 
+{
+	#de_img{
+	width:350px;
+	height:250px;
+  }
+  #mark .item {
+    width: 100%;
+    margin: 0px;
+  }
+}
+
+
+

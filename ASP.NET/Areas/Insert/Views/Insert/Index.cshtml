@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<div class="container">
+    <form method="get" action="Search">
+        <label>新增訂單</label>
+        <table class="table table-striped">
+            
+            <tr>
+                <td>
+                    <label>客戶名稱</label>
+                </td>
+                <td>
+
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>負責員工名稱</label>
+                </td>
+                <td>
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>訂單日期</label>
+                </td>
+                <td>
+                    <input type="date" name="OrderDate" />
+
+
+                    <label>出貨日期</label>
+
+                    <input type="date" name="SentDate" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>需要日期</label>
+                </td>
+                <td>
+                    <input type="date" name="NeedDate" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>出貨公司名稱</label>
+                </td>
+                <td>
+                    @*@Html.DropDownList("shipperdata", (IEnumerable<SelectListItem>)ViewBag.shipperdata)*@
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>運費</label>
+                </td>
+                <td>
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>出貨國家</label>
+                </td>
+                <td>
+
+
+                </td>
+                <td>
+                    <label>出貨城市</label>
+                </td>
+                <td>
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>出貨地區</label>
+                </td>
+                <td>
+
+
+                </td>
+                <td>
+                    <label>郵遞區號</label>
+                </td>
+                <td>
+
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <label>出貨地址</label>
+                </td>
+                <td>
+
+
+                </td>
+                <td>
+                    <label>出貨說明</label>
+                </td>
+                <td>
+
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <label>訂單金額總計</label>
+                </td>
+                <td>
+
+
+                </td>
+        
+            </tr>
+
+
+
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" class="btn btn-default" value="存檔">
+                    <input type="reset" class="btn btn-default" value="回前一頁">
+
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
