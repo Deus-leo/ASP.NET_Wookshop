@@ -143,6 +143,8 @@
     <Compile Include="Areas\Insert\InsertAreaRegistration.cs" />
     <Compile Include="Areas\Search\Controllers\SearchController.cs" />
     <Compile Include="Areas\Search\SearchAreaRegistration.cs" />
+    <Compile Include="Areas\Update\Controllers\UpdateController.cs" />
+    <Compile Include="Areas\Update\UpdateAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -243,6 +245,7 @@
     <Content Include="Areas\Insert\Views\Web.config" />
     <Content Include="Areas\Search\Views\Search\Index.cshtml" />
     <Content Include="Areas\Insert\Views\Insert\Index.cshtml" />
+    <Content Include="Areas\Update\Views\Web.config" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -325,6 +328,8 @@
     <Folder Include="Areas\Insert\Views\Shared\" />
     <Folder Include="Areas\Search\Models\" />
     <Folder Include="Areas\Search\Views\Shared\" />
+    <Folder Include="Areas\Update\Models\" />
+    <Folder Include="Areas\Update\Views\Shared\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>

@@ -2,19 +2,20 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
 
 <h2>Index</h2>
-<link href="~/Content/bootstrap.css" rel="stylesheet" />
 <div class="container">
-    <form method="get" action="Search">
+    <form method="POST" action="Index">
         <label>新增訂單</label>
-        <table class="table table-striped">
+        <table class="table table-striped" border-collapse="collapse">
             
             <tr>
                 <td>
                     <label>客戶名稱</label>
                 </td>
-                <td>
+                <td colspan="3">
+                    @Html.DropDownList("cuslistdata", (IEnumerable<SelectListItem>)ViewBag.cusdata)
 
 
                 </td>
@@ -23,7 +24,9 @@
                 <td>
                     <label>負責員工名稱</label>
                 </td>
-                <td>
+                <td colspan="3">
+
+                    @Html.DropDownList("emplistdata", (IEnumerable<SelectListItem>)ViewBag.empdata)
 
 
                 </td>
@@ -31,14 +34,16 @@
 
             <tr>
                 <td>
-                    <label>訂單日期</label>
+                    <label>訂購日期</label>
                 </td>
                 <td>
                     <input type="date" name="OrderDate" />
+                </td>
 
-
-                    <label>出貨日期</label>
-
+                <td>
+                     <label>出貨日期</label>
+                </td>
+                <td>
                     <input type="date" name="SentDate" />
                 </td>
             </tr>
@@ -55,8 +60,8 @@
                 <td>
                     <label>出貨公司名稱</label>
                 </td>
-                <td>
-                    @*@Html.DropDownList("shipperdata", (IEnumerable<SelectListItem>)ViewBag.shipperdata)*@
+                <td colspan="3">
+                    @Html.DropDownList("shipplistdata", (IEnumerable<SelectListItem>)ViewBag.shippdata)
 
 
                 </td>
@@ -66,8 +71,9 @@
                 <td>
                     <label>運費</label>
                 </td>
-                <td>
-
+                <td colspan="3">
+                    
+                    <input type="text" name="Shipment">
 
                 </td>
             </tr>
@@ -77,13 +83,17 @@
                     <label>出貨國家</label>
                 </td>
                 <td>
-
+                    <input type="text" name="ShipCountry">
 
                 </td>
+
+           
                 <td>
                     <label>出貨城市</label>
                 </td>
+                
                 <td>
+                    <input type="text" name="ShipCity">
 
 
                 </td>
@@ -95,12 +105,16 @@
                 </td>
                 <td>
 
-
+                    <input type="text" name="ShipArea">
                 </td>
+
                 <td>
+
                     <label>郵遞區號</label>
                 </td>
                 <td>
+
+                    <input type="text" name="Zipcode">
 
 
                 </td>
@@ -111,14 +125,20 @@
                 <td>
                     <label>出貨地址</label>
                 </td>
+
                 <td>
 
+                    <input type="text" name="ShipAddress">
 
                 </td>
                 <td>
+
                     <label>出貨說明</label>
                 </td>
+
                 <td>
+
+                    <input type="text" name="ShipDes">
 
 
                 </td>
@@ -129,8 +149,9 @@
                 <td>
                     <label>訂單金額總計</label>
                 </td>
-                <td>
+                <td colspan="3">
 
+                    <input type="text" name="OrderMoney" id="OrderMoney">
 
                 </td>
         
@@ -140,13 +161,91 @@
 
             <tr>
                 <td></td>
-                <td>
+               
+
+                <td colspan="3">
                     <input type="submit" class="btn btn-default" value="存檔">
                     <input type="reset" class="btn btn-default" value="回前一頁">
 
                 </td>
             </tr>
         </table>
-    </form>
+        </br>
+        <input type="button" class="btn btn-default" value="+新增商品" onclick="insert()">
+        <table class="table table-striped" border-collapse="collapse">
+
+         <tr>
+             <td>商品</td> 
+             <td>單價</td>
+             <td>數量</td>
+             <td>小計</td>
+             <td></td>
+
+
+         </tr>
+
+           
+         <tr id="order_detail">
+             <td>@Html.DropDownList("productlistdata", (IEnumerable<SelectListItem>)ViewBag.productdata)</td>
+             <td class="tbprice"><input type="text" id="price" name="price"></td>
+             <td class="tbcount"><input type="text" id="count" name="count"></td>
+             <td class="tbtotal"><label id="total" name="total"></label></td>
+             <td class="tbnone"></td>
+
+
+         </tr>
+
+         </table>
+</form>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#productlistdata").change(function () {
+                console.log("test");
+
+                var product_id = $("#productlistdata").val();
+
+                $.ajax({
+                    url: "Product_Price",
+                    type: "POST",
+                    dataType: 'text',
+                    data: {
+                        id : product_id
+                    },
+                    success: function (msg) {
+                        $("#price").val(msg);
+                        console.log(msg);
+                    }
+
+                });
+
+            });
+
+            $("#count").change(function () {
+                var price = $("#price").val();
+                var count = $("#count").val();
+
+                var total = price * count;
+                console.log(total);
+
+                $("#total").text(total);
+
+                $("#OrderMoney").val(total);
+                
+            });
+
+        });
+
+
+        function insert()
+        {
+            console.log("kuas");
+            var myRow = "<tr><td>C</td><td>3</td></tr>";
+            $("#order_detail tr:last").after(myRow);
+
+
+        }
+    </script>
 
 </div>

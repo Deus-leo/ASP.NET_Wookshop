@@ -18,29 +18,29 @@ namespace ASP.NET.Areas.Search.Controllers
 
         List<SelectListItem> empdata = new List<SelectListItem>();
         List<SelectListItem> shippdata = new List<SelectListItem>();
-   
+
         public ActionResult Index()
         {
-            
-            AddData();
-           
 
-            
+            AddData();
+
+
+
             ViewBag.empdata = empdata;
             ViewBag.shipperdata = shippdata;
             return View();
         }
 
         [ActionName("Search")]
-        public ActionResult Index(String OrderID, String User, DateTime? OrderDate, DateTime? SentDate, DateTime? NeedDate, String employeeName, String shipperdata,int page = 0)
+        public ActionResult Index(String OrderID, String User, DateTime? OrderDate, DateTime? SentDate, DateTime? NeedDate, String employeeName, String shipperdata, int page = 0)
         {
 
             String OrderDate_String = OrderDate.ToString();
             String SentDate_String = SentDate.ToString();
             String NeedDate_String = NeedDate.ToString();
             KuasDB db = new KuasDB();
-  
-           // 條件搜尋,沒有輸入的則不進行搜尋
+
+            // 條件搜尋,沒有輸入的則不進行搜尋
             double count = db.Orders.Where(x => (
                 (!string.IsNullOrEmpty(User)) ? x.Customers.CompanyName.Contains(User) : true) &&
                 ((!string.IsNullOrEmpty(OrderID)) ? x.OrderID.ToString().Equals(OrderID) : true) &&
@@ -59,37 +59,37 @@ namespace ASP.NET.Areas.Search.Controllers
 
 
 
-            var Query_data = db.Orders.Where(x =>(
-                (!string.IsNullOrEmpty(User)) ? x.Customers.CompanyName.Contains(User) : true) && 
+            var Query_data = db.Orders.Where(x => (
+                (!string.IsNullOrEmpty(User)) ? x.Customers.CompanyName.Contains(User) : true) &&
                 ((!string.IsNullOrEmpty(OrderID)) ? x.OrderID.ToString().Equals(OrderID) : true) &&
-                ((!string.IsNullOrEmpty(employeeName)) ? x.EmployeeID.ToString().Equals(employeeName) : true)&&
+                ((!string.IsNullOrEmpty(employeeName)) ? x.EmployeeID.ToString().Equals(employeeName) : true) &&
                 ((!string.IsNullOrEmpty(shipperdata)) ? x.ShipperID.ToString().Equals(shipperdata) : true) &&
                 ((!string.IsNullOrEmpty(OrderDate_String)) ? (x.OrderDate.Year.Equals(OrderDate.Value.Year) && x.OrderDate.Month.Equals(OrderDate.Value.Month) && x.OrderDate.Day.Equals(OrderDate.Value.Day)) : true) &&
                 ((!string.IsNullOrEmpty(SentDate_String)) ? (x.ShippedDate.Value.Year.Equals(SentDate.Value.Year) && x.ShippedDate.Value.Month.Equals(SentDate.Value.Month) && x.ShippedDate.Value.Day.Equals(SentDate.Value.Day)) : true) &&
-                ((!string.IsNullOrEmpty(NeedDate_String))  ? (x.RequiredDate.Year.Equals(NeedDate.Value.Year) && x.RequiredDate.Month.Equals(NeedDate.Value.Month) && x.RequiredDate.Day.Equals(NeedDate.Value.Day)) : true) 
+                ((!string.IsNullOrEmpty(NeedDate_String)) ? (x.RequiredDate.Year.Equals(NeedDate.Value.Year) && x.RequiredDate.Month.Equals(NeedDate.Value.Month) && x.RequiredDate.Day.Equals(NeedDate.Value.Day)) : true)
 
 
 
 
                 )
-                
-                
+
+
                 .Select(x => new
-            {
-                x.OrderID,
-                CompanyName = x.Customers.CompanyName,
-                x.OrderDate,
-                x.ShippedDate
+                {
+                    x.OrderID,
+                    CompanyName = x.Customers.CompanyName,
+                    x.OrderDate,
+                    x.ShippedDate
 
-            })
-            .OrderBy(x=>x.OrderID)
-            .Skip(10*page)
+                })
+            .OrderBy(x => x.OrderID)
+            .Skip(10 * page)
             .Take(10)
-            .ToList().Select(x=>x.ToExpando());
+            .ToList().Select(x => x.ToExpando());
 
-            
-            
-            
+
+
+
             AddData();
 
             ViewBag.empdata = empdata;
@@ -100,14 +100,15 @@ namespace ASP.NET.Areas.Search.Controllers
         }
 
 
-        public void  AddData()
+        public void AddData()
         {
             KuasDB db = new KuasDB();
-            empdata.Add(new SelectListItem() { 
-            
+            empdata.Add(new SelectListItem()
+            {
+
                 Text = "---請選擇負責員工---",
-                Value=""
-                
+                Value = ""
+
             });
 
             shippdata.Add(new SelectListItem()
@@ -146,8 +147,8 @@ namespace ASP.NET.Areas.Search.Controllers
                 });
             }
 
-          
-        
+
+
         }
     }
 }
