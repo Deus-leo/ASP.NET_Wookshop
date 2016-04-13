@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+@if (ViewBag.success != null)
+{
+    <script>alert("刪除成功");</script>
+    <script>document.location.href = "../Search/Search/Index";</script>
+    
+
+}

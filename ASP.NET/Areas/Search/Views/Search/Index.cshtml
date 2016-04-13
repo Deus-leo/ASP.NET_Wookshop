@@ -116,7 +116,7 @@
                 </tr>
                 @foreach (var product in ViewBag.Query_data)
                 {
-
+                    
 
                     <tr>
                         <td>@product.OrderID</td>
@@ -124,10 +124,10 @@
                         <td>@product.OrderDate</td>
 
                         <td>@product.ShippedDate</td>
-                        <td><input type="button" class="btn btn-default" value="修改"></td>
+                        <td><input type="button" class="btn btn-default" value="修改" onclick="location.href = '/Update/Update?orderId=@product.OrderID'"></td>
+                        
 
-
-                        <td><input type="button" class="btn btn-default" value="刪除"></td>
+                        <td><input type="button" class="btn btn-default" value="刪除" onclick="location.href = '/Delete/Delete?orderId=@product.OrderID'"></td>
                     </tr>
                 }
             </table>

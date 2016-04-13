@@ -139,6 +139,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Delete\Controllers\DeleteController.cs" />
+    <Compile Include="Areas\Delete\DeleteAreaRegistration.cs" />
     <Compile Include="Areas\Insert\Controllers\InsertController.cs" />
     <Compile Include="Areas\Insert\InsertAreaRegistration.cs" />
     <Compile Include="Areas\Search\Controllers\SearchController.cs" />
@@ -246,6 +248,9 @@
     <Content Include="Areas\Search\Views\Search\Index.cshtml" />
     <Content Include="Areas\Insert\Views\Insert\Index.cshtml" />
     <Content Include="Areas\Update\Views\Web.config" />
+    <Content Include="Areas\Update\Views\Update\Index.cshtml" />
+    <Content Include="Areas\Delete\Views\Web.config" />
+    <Content Include="Areas\Delete\Views\Delete\Index.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -324,6 +329,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Delete\Models\" />
+    <Folder Include="Areas\Delete\Views\Shared\" />
     <Folder Include="Areas\Insert\Models\" />
     <Folder Include="Areas\Insert\Views\Shared\" />
     <Folder Include="Areas\Search\Models\" />

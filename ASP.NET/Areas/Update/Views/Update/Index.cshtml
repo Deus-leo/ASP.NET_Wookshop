@@ -9,16 +9,17 @@
 
 
 <div class="container">
-    <form method="POST" action="Index">
-        <label>新增訂單</label>
+    <form method="POST" action="Update/Index">
+        <label>修改訂單</label>
+
         <table class="table table-striped" border-collapse="collapse">
-            
+
             <tr>
                 <td>
                     <label>*客戶名稱</label>
                 </td>
                 <td colspan="3">
-                    @Html.DropDownList("cuslistdata", (IEnumerable<SelectListItem>)ViewBag.cusdata, new { required = "required" })
+                    @Html.DropDownList("cuslistdata", (IEnumerable<SelectListItem>)@ViewBag.OrderData[0].cusdata, new { required = "required" })
 
 
                 </td>
@@ -29,7 +30,7 @@
                 </td>
                 <td colspan="3">
 
-                    @Html.DropDownList("emplistdata", (IEnumerable<SelectListItem>)ViewBag.empdata, new { required = "required" })
+                    @Html.DropDownList("emplistdata", (IEnumerable<SelectListItem>)@ViewBag.OrderData[0].empdata, new { required = "required" })
 
 
                 </td>
@@ -40,14 +41,14 @@
                     <label>*訂購日期</label>
                 </td>
                 <td>
-                    <input type="date" name="OrderDate" required />
+                    <input type="date" name="OrderDate" value="@ViewBag.OrderData[0].OrderDate"required  />
                 </td>
 
                 <td>
-                     <label>出貨日期</label>
+                    <label>出貨日期</label>
                 </td>
                 <td>
-                    <input type="date" name="SentDate" />
+                    <input type="date" name="SentDate" value="@ViewBag.OrderData[0].ShippedDate" />
                 </td>
             </tr>
             <tr>
@@ -55,7 +56,7 @@
                     <label>*需要日期</label>
                 </td>
                 <td>
-                    <input type="date" name="NeedDate" required />
+                    <input type="date" name="NeedDate" value="@ViewBag.OrderData[0].RequiredDate" required />
                 </td>
             </tr>
 
@@ -64,7 +65,7 @@
                     <label>出貨公司名稱</label>
                 </td>
                 <td colspan="3">
-                    @Html.DropDownList("shipplistdata", (IEnumerable<SelectListItem>)ViewBag.shippdata)
+                    @Html.DropDownList("shipplistdata", (IEnumerable<SelectListItem>)@ViewBag.OrderData[0].shippdata)
 
 
                 </td>
@@ -74,10 +75,14 @@
                 <td>
                     <label>運費</label>
                 </td>
-                <td colspan="3">
-                    
-                    <input type="text" name="Shipment">
+                <td >
+                  
+                    @ViewBag.OrderData[0].Freight
+                   
+                </td>
+                <td>
 
+                    <input type="text" name="Shipment" hidden="hidden" value="@ViewBag.OrderData[0].Freight">
                 </td>
             </tr>
 
@@ -86,17 +91,17 @@
                     <label>出貨國家</label>
                 </td>
                 <td>
-                    <input type="text" name="ShipCountry">
+                    <input type="text" name="ShipCountry" value="@ViewBag.OrderData[0].ShipCountry">
 
                 </td>
 
-           
+
                 <td>
                     <label>出貨城市</label>
                 </td>
-                
+
                 <td>
-                    <input type="text" name="ShipCity">
+                    <input type="text" name="ShipCity" value="@ViewBag.OrderData[0].ShipCity">
 
 
                 </td>
@@ -108,7 +113,7 @@
                 </td>
                 <td>
 
-                    <input type="text" name="ShipArea">
+                    <input type="text" name="ShipArea" value="@ViewBag.OrderData[0].ShipRegion">
                 </td>
 
                 <td>
@@ -117,7 +122,7 @@
                 </td>
                 <td>
 
-                    <input type="text" name="Zipcode">
+                    <input type="text" name="Zipcode" value="@ViewBag.OrderData[0].ShipPostalCode">
 
 
                 </td>
@@ -131,7 +136,7 @@
 
                 <td>
 
-                    <input type="text" name="ShipAddress">
+                    <input type="text" name="ShipAddress" value="@ViewBag.OrderData[0].ShipAddress">
 
                 </td>
                 <td>
@@ -141,7 +146,7 @@
 
                 <td>
 
-                    <input type="text" name="ShipDes">
+                    <input type="text" name="ShipDes" value="@ViewBag.OrderData[0].ShipName">
 
 
                 </td>
@@ -152,22 +157,31 @@
                 <td>
                     <label>訂單金額總計</label>
                 </td>
-                <td colspan="3">
+                <td >
 
-                    <input type="text" name="OrderMoney" id="OrderMoney" disabled="disabled">
+                    <input type="text" name="OrderMoney" id="OrderMoney" disabled="disabled" value="@ViewBag.OrderData[0].totalMoney">
 
                 </td>
-        
+
+                <td >
+
+                    <input type="text" name="Orderid" id="Orderid" hidden="hidden" value="@ViewBag.OrderData[0].OrderID" />
+
+                </td>
+
+
             </tr>
 
 
 
             <tr>
                 <td></td>
-               
+
 
                 <td colspan="3">
                     <input type="submit" class="btn btn-default" value="存檔">
+                    <input type="button" class="btn btn-default" value="刪除本訂單" onclick="location.href = '/Delete/Delete?orderId=@ViewBag.OrderData[0].OrderID'">
+
                     <input type="reset" class="btn btn-default" value="回前一頁">
 
                 </td>
@@ -175,44 +189,47 @@
         </table>
         </br>
         <input type="button" class="btn btn-default" value="+新增商品" onclick="insert()">
-        <table class="table table-striped" id="Jerry" border-collapse="collapse">
+        <table class="table table-striped" id="ProductDetail" border-collapse="collapse">
 
-         <tr>
-             <td>商品</td> 
-             <td>單價</td>
-             <td>數量</td>
-             <td>小計</td>
-             <td></td>
+            <tr>
+                <td>商品</td>
+                <td>單價</td>
+                <td>數量</td>
+                <td>小計</td>
+                <td></td>
 
 
-         </tr>
+            </tr>
             
-           
-         <tr id="order_detail">
-             <td>@Html.DropDownList("productlistdata", (IEnumerable<SelectListItem>)ViewBag.productdata)</td>
-             <td class="tbprice"><input type="text" id="price" name="price"></td>
-             <td class="tbcount"><input type="text" id="count" name="count"></td>
-             <td class="tbtotal"><label id="total" name="total"></label></td>
-             <td class="tbnone"></td>
+           @foreach (var detail in ViewBag.OrderDetailsData)
+           {
+                <tr id="order_detail">
+               
+                    <td>@Html.DropDownList("productlistdata", (IEnumerable<SelectListItem>)@detail.productdata)</td>
+                    <td class="tbprice"><input type="text" id="price" name="price" value="@detail.UnitPrice"></td>
+                    <td class="tbcount"><input type="text" id="count" name="count" value="@detail.Qty"></td>
+                    <td class="tbtotal"><label>@detail.total</label></td>
+                    <td class="tbnone"></td>
+             
+                </tr>
+           }
+        </table>
+    </form>
 
-
-         </tr>
-            
-         </table>
-</form>
-  
     <script>
-        
-      
+
+
         var money = 0;
         $(document).ready(function () {
-            $("#productlistdata").change(function () {
+            var test = $('#order_detail');
+            test.find("select").change(function () {
                 console.log("test");
 
                 var product_id = $("#productlistdata").val();
+                console.log(product_id);
 
                 $.ajax({
-                    url: "Product_Price",
+                    url: "Update/Product_Price",
                     type: "POST",
                     dataType: 'text',
                     data: {
@@ -238,21 +255,21 @@
                 $("#total").text(total);
                 money += total;
                 $("#OrderMoney").val(money);
-                
+
             });
 
         });
 
-        
+
         function insert()
         {
-          var temp = $('#order_detail').clone();
-         
+            var temp = $('#order_detail').clone();
+
             temp.find("select").change(function () {
                 var product_id = temp.find("select").val();
                 console.log(product_id);
                 $.ajax({
-                    url: "Product_Price",
+                    url: "Update/Product_Price",
                     type: "POST",
                     dataType: 'text',
                     data: {
@@ -281,14 +298,19 @@
                 $("#OrderMoney").val(money);
 
             });
-            temp.html().replace("productlistdata", "JerrySelect")
-            $("#Jerry").append(temp);
+            temp.html().replace("productlistdata", "ProductSelect")
+            $("#ProductDetail").append(temp);
 
 
         }
+       
+      
     </script>
-    @if(ViewBag.success !=null)
+
+    @if (ViewBag.success != null)
     {
-     <script>alert("新增成功");</script>
+        <script>alert("更新成功");</script>
+
     }
+    
 </div>

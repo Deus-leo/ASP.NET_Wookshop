@@ -35,15 +35,77 @@ namespace ASP.NET.Areas.Insert.Controllers
         /// </summary>
        
         [HttpPost]
-        public ActionResult Index(String cuslistdata, String emplistdata, DateTime? OrderDate, DateTime? NeedDate, DateTime? SentDate, String shipplistdata, String Shipment, String ShipCountry, String ShipCity, String ShipArea, String Zipcode, String ShipAddress, String ShipDes, String OrderMoney, String productlistdata, String price, String count)
+        public ActionResult Index(String cuslistdata, String emplistdata, DateTime OrderDate, DateTime NeedDate, DateTime? SentDate, String shipplistdata, String Shipment, String ShipCountry, String ShipCity, String ShipArea, String Zipcode, String ShipAddress, String ShipDes)
         {
 
+
+            Shipment = String.IsNullOrEmpty(Shipment) ? "0" : Shipment;
+            ShipCountry = String.IsNullOrEmpty(ShipCountry) ? "未填寫" : ShipCountry;
+            ShipCity = String.IsNullOrEmpty(ShipCity) ? "未填寫" : ShipCity;
+            ShipArea = String.IsNullOrEmpty(ShipArea) ? "未填寫" : ShipArea;
+            Zipcode = String.IsNullOrEmpty(Zipcode) ? "未填寫" : Zipcode;
+            ShipAddress = String.IsNullOrEmpty(ShipAddress) ? "未填寫" : ShipAddress;
+            ShipDes = String.IsNullOrEmpty(ShipDes) ? "未填寫" : ShipDes;
+
+            
+            
+            String[] productlistdata = Request.Form.GetValues("productlistdata"); 
+            String[] price = Request.Form.GetValues("price"); 
+            String[] count = Request.Form.GetValues("count");
+
+
+            KuasDB kuas = new KuasDB();
+            Orders orders = new Orders();
+           
+            orders.CustomerID = Int32.Parse(cuslistdata);
+            orders.EmployeeID = Int32.Parse(emplistdata);
+            orders.OrderDate = OrderDate;
+            orders.RequiredDate = NeedDate;
+            orders.ShippedDate = SentDate;
+            orders.ShipperID = Int32.Parse(shipplistdata);
+            orders.Freight = Int32.Parse(Shipment);
+            orders.ShipName = ShipDes;
+            orders.ShipAddress = ShipAddress;
+            orders.ShipCity = ShipCity;
+            orders.ShipRegion = ShipArea;
+            orders.ShipPostalCode = Zipcode;
+            orders.ShipCountry = ShipCountry;
+
+            
+            kuas.Orders.Add(orders);
+
+            for (int i = 0; i < productlistdata.Length; i++)
+            {
+                OrderDetails orderdetail = new OrderDetails();
+                orderdetail.ProductID = Int32.Parse(productlistdata[i]);
+                orderdetail.UnitPrice = decimal.Parse(price[i]);
+                orderdetail.Qty = short.Parse(count[i]);
+                orders.OrderDetails.Add(orderdetail);
+                    
+
+
+               
+
+
+            }
+            try
+            {
+                kuas.SaveChanges();
+
+
+            }
+
+            catch (Exception ex)
+            {
+                throw;
+            }
 
             AddData();
             ViewBag.cusdata = cusdata;
             ViewBag.empdata = empdata;
             ViewBag.shippdata = shippdata;
             ViewBag.productdata = productdata;
+            ViewBag.success = "success";
             return View();
         }
         /// <summary>
@@ -79,7 +141,7 @@ namespace ASP.NET.Areas.Insert.Controllers
             cusdata.Add(new SelectListItem()
             {
 
-                Text = "---請選擇負責員工---",
+                Text = "---請選擇顧客名稱---",
                 Value = ""
 
             });
@@ -96,7 +158,7 @@ namespace ASP.NET.Areas.Insert.Controllers
             {
 
                 Text = "---請選擇出貨公司---",
-                Value = ""
+                Value = "0"
 
             });
 
