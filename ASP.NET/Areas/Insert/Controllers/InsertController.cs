@@ -11,10 +11,10 @@ namespace ASP.NET.Areas.Insert.Controllers
     {
         //
         // GET: /Insert/Insert/
-        List<SelectListItem> cusdata = new List<SelectListItem>();
-        List<SelectListItem> empdata = new List<SelectListItem>();
-        List<SelectListItem> shippdata = new List<SelectListItem>();
-        List<SelectListItem> productdata = new List<SelectListItem>();
+       public List<SelectListItem> cusdata = new List<SelectListItem>();
+       public List<SelectListItem> empdata = new List<SelectListItem>();
+       public List<SelectListItem> shippdata = new List<SelectListItem>();
+       public List<SelectListItem> productdata = new List<SelectListItem>();
 
         public ActionResult Index()
         {
@@ -24,8 +24,11 @@ namespace ASP.NET.Areas.Insert.Controllers
             ViewBag.cusdata = cusdata;
             ViewBag.empdata = empdata;
             ViewBag.shippdata = shippdata;
-            ViewBag.productdata = productdata;
 
+            //填入新增商品data
+            KuasDB db = new KuasDB();
+            List<Products> ProductData = db.Products.ToList();
+            ViewBag.ProductData = ProductData;
 
             return View();
         }
@@ -40,12 +43,12 @@ namespace ASP.NET.Areas.Insert.Controllers
 
 
             Shipment = String.IsNullOrEmpty(Shipment) ? "0" : Shipment;
-            ShipCountry = String.IsNullOrEmpty(ShipCountry) ? "未填寫" : ShipCountry;
-            ShipCity = String.IsNullOrEmpty(ShipCity) ? "未填寫" : ShipCity;
-            ShipArea = String.IsNullOrEmpty(ShipArea) ? "未填寫" : ShipArea;
-            Zipcode = String.IsNullOrEmpty(Zipcode) ? "未填寫" : Zipcode;
-            ShipAddress = String.IsNullOrEmpty(ShipAddress) ? "未填寫" : ShipAddress;
-            ShipDes = String.IsNullOrEmpty(ShipDes) ? "未填寫" : ShipDes;
+            ShipCountry = String.IsNullOrEmpty(ShipCountry) ? "" : ShipCountry;
+            ShipCity = String.IsNullOrEmpty(ShipCity) ? "" : ShipCity;
+            ShipArea = String.IsNullOrEmpty(ShipArea) ? "" : ShipArea;
+            Zipcode = String.IsNullOrEmpty(Zipcode) ? "" : Zipcode;
+            ShipAddress = String.IsNullOrEmpty(ShipAddress) ? "" : ShipAddress;
+            ShipDes = String.IsNullOrEmpty(ShipDes) ? "" : ShipDes;
 
             
             
@@ -104,7 +107,9 @@ namespace ASP.NET.Areas.Insert.Controllers
             ViewBag.cusdata = cusdata;
             ViewBag.empdata = empdata;
             ViewBag.shippdata = shippdata;
-            ViewBag.productdata = productdata;
+            //填入新增商品data
+            List<Products> ProductData = kuas.Products.ToList();
+            ViewBag.ProductData = ProductData;
             ViewBag.success = "success";
             return View();
         }
@@ -121,7 +126,7 @@ namespace ASP.NET.Areas.Insert.Controllers
             KuasDB db = new KuasDB();
             var price = db.Products.Where(x=>x.ProductID.Equals(Id)).Select(x=>x.UnitPrice).First();
 
-            return this.Json(price,JsonRequestBehavior.AllowGet);
+            return this.Json(price);
         }
  
 

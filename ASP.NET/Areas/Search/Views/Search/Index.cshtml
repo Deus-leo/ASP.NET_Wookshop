@@ -15,20 +15,21 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+   
 </head>
 <body>
 
     <div class="container">
-        <form method="get" action="Search">
+        @*<form method="post" action="Search">*@
             <label>訂單查詢</label>
-            <table class="table table-striped">
+            <table class="table table-responsive">
                 <tr>
                     <td>
                         <label>訂單編號</label>
                     </td>
                     <td>
-                        <input type="text" name="OrderID" />
+                        <input type="text" name="OrderID" id="OrderID" />
                     </td>
                 </tr>
                 <tr>
@@ -36,7 +37,7 @@
                         <label>客戶名稱</label>
                     </td>
                     <td>
-                        <input type="text" name="User" />
+                        <input type="text" name="User" id="User" />
                     </td>
                 </tr>
                 <tr>
@@ -65,12 +66,12 @@
                         <label>訂購日期</label>
                     </td>
                     <td>
-                        <input type="date" name="OrderDate" />
+                        <input type="date" name="OrderDate" id="OrderDate" />
 
 
                         <label>出貨日期</label>
 
-                        <input type="date" name="SentDate" />
+                        <input type="date" name="SentDate" id="SentDate" />
                     </td>
                 </tr>
                 <tr>
@@ -78,20 +79,20 @@
                         <label>需要日期</label>
                     </td>
                     <td>
-                        <input type="date" name="NeedDate" />
+                        <input type="date" name="NeedDate" id="NeedDate" />
                     </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
-                        <input type="submit" class="btn btn-default" value="查詢">
-                        <input type="reset" class="btn btn-default" value="清除">
-                       <a href="/Insert/Insert"><input type="button" class="btn btn-default" value="新增訂單"></a>
+                        <input type="submit"  value="查詢" id="submit">
+                        <input type="reset" value="清除" id="clear" />
+                       <a href="/Insert/Insert"><input type="button" id="add" value="新增訂單"></a>
 
                     </td>
                 </tr>
             </table>
-        </form>
+        @*</form>*@
 
     </div>
 
@@ -101,85 +102,313 @@
     {
 
         <div class="container">
+            <div id="grid"></div>
+
+            <script>
+
+
+
+            </script>
             <label>查詢結果</label>
-            <table class="table table-striped">
-                <tr>
-                    <td>訂單編號</td>
-                    <td>客戶名稱</td>
-                    <td>訂購日期</td>
-
-                    <td>發貨日期</td>
-                    <td></td>
-
-                    <td></td>
-
-                </tr>
-                @foreach (var product in ViewBag.Query_data)
-                {
-                    
-
-                    <tr>
-                        <td>@product.OrderID</td>
-                        <td>@product.CompanyName</td>
-                        <td>@product.OrderDate</td>
-
-                        <td>@product.ShippedDate</td>
-                        <td><input type="button" class="btn btn-default" value="修改" onclick="location.href = '/Update/Update?orderId=@product.OrderID'"></td>
-                        
-
-                        <td><input type="button" class="btn btn-default" value="刪除" onclick="location.href = '/Delete/Delete?orderId=@product.OrderID'"></td>
-                    </tr>
-                }
-            </table>
+     
         </div>
     }
-    <div style="text-align:center; font-size:large">
-        <a href="@String.Format("Search?OrderID={0}&User={1}&employeeName={2}&shipperdata={3}&OrderDate={4}&SentDate={5}&NeedDate={6}&page={7}",
-            @Request.Params["OrderID"],
-        @Request.Params["User"],
-        @Request.Params["employeeName"],
-        @Request.Params["shipperdata"],
-        @Request.Params["OrderDate"],
-        @Request.Params["SentDate"],
-        @Request.Params["NeedDate"],
-        1
+
+    @*設定kendo ui 樣式*@
+    <script>
+
+        $(document).ready(function () {
+            // create ComboBox from input HTML element
+   
+
+            // create ComboBox from select HTML element
+            $("#employeeName").kendoDropDownList();
+            $("#shipperdata").kendoDropDownList();
+            $("#OrderDate").kendoDatePicker({
+                animation: {
+                    close: {
+                        effects: "fadeOut zoom:out",
+                        duration: 300
+                    },
+                    open: {
+                        effects: "fadeIn zoom:in",
+                        duration: 300
+                    }
+                },
+                format: "yyyy/MM/dd"
+            });
+
+            $("#SentDate").kendoDatePicker({
+                animation: {
+                    close: {
+                        effects: "fadeOut zoom:out",
+                        duration: 300
+                    },
+                    open: {
+                        effects: "fadeIn zoom:in",
+                        duration: 300
+                    }
+                },
+                format: "yyyy/MM/dd"
+            });
+
+            $("#NeedDate").kendoDatePicker({
+                animation: {
+                    close: {
+                        effects: "fadeOut zoom:out",
+                        duration: 300
+                    },
+                    open: {
+                        effects: "fadeIn zoom:in",
+                        duration: 300
+                    }
+                },
+                format: "yyyy/MM/dd"
+            });
 
 
 
-        )" @*style="border-style:solid; border-color:blue"*@ >«</a>
-        @for (int i = 1; i <= ViewBag.maxpage; i++)
-        {
+            $("#clear").kendoButton({
+                icon: "cancel"
+            });
 
-            <a href="@String.Format("Search?OrderID={0}&User={1}&employeeName={2}&shipperdata={3}&OrderDate={4}&SentDate={5}&NeedDate={6}&page={7}",
-            @Request.Params["OrderID"],
-        @Request.Params["User"],
-        @Request.Params["employeeName"],
-        @Request.Params["shipperdata"],
-        @Request.Params["OrderDate"],
-        @Request.Params["SentDate"],
-        @Request.Params["NeedDate"],
-        i-1
+            $("#add").kendoButton({
+                
+            });
 
 
+            $("#submit").kendoButton({
+                icon: "cancel"
+            });
 
-        )" @*style="border-style:solid; border-color:blue"*@>@i</a>
 
+            $("#OrderID").kendoAutoComplete();
 
-        }
-        <a href="@String.Format("Search?OrderID={0}&User={1}&employeeName={2}&shipperdata={3}&OrderDate={4}&SentDate={5}&NeedDate={6}&page={7}",
-            @Request.Params["OrderID"],
-        @Request.Params["User"],
-        @Request.Params["employeeName"],
-        @Request.Params["shipperdata"],
-        @Request.Params["OrderDate"],
-        @Request.Params["SentDate"],
-        @Request.Params["NeedDate"],
-        @ViewBag.maxpage-1
+            $("#User").kendoAutoComplete();
+            $("#grid").kendoGrid();
+
+        });
 
 
 
-        )" @*style="border-style:solid; border-color:blue"*@>»</a>
-    </div>
+    </script>
+
+    @*SetDataSource*@
+    <script>
+
+    $(function () {
+        // Handler for .ready() called.
+
+        //建立資料來源物件
+        var dataSrc = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    //以下其實就是$.ajax的參數
+                    type: "POST",
+                    url: '@Url.Action("DataSource", "Search")',
+                    dataType: "json",
+                    data: {
+                        //額外傳至後方的參數
+                        OrderID: function () {
+                            return $("#OrderID").val();
+                        },
+                        User: function () {
+                            return $("#User").val();
+                        },
+
+                        OrderDate: function () {
+                            return $("#OrderDate").val();
+                        },
+
+                        SentDate: function () {
+                            return $("#SentDate").val();
+                        },
+
+                        NeedDate: function () {
+                            return $("#NeedDate").val();
+                        },
+
+                        employeeName: function () {
+                            return $("#employeeName").val();
+                        },
+
+                        shipperdata: function () {
+                            return $("#shipperdata").val();
+                        },
+
+
+
+                    }
+                },
+                update: {
+                    url: '@Url.Action("UpdateData", "../Update/Update")',
+                    type: "POST",
+                    dataType: "text",
+
+                },
+                destroy: {
+                    url: '@Url.Action("DeleteData", "../Delete/Delete")',
+                    type: "POST",
+                    dataType: "text",
+
+                },
+
+                parameterMap: function (options, operation) {
+                    if (operation !== "read" && options.models) {
+
+                        console.log(options.models[0]);
+                        options.models[0].OrderDate = kendo.toString(kendo.parseDate(options.models[0].OrderDate, 'yyyy-MM-dd'), 'yyyy-MM-dd')
+                        options.models[0].ShippedDate = kendo.toString(kendo.parseDate(options.models[0].ShippedDate, 'yyyy-MM-dd'), 'yyyy-MM-dd')
+                        console.log(options.models[0]);
+
+                        return { models: JSON.stringify(options.models[0]) };
+                    }
+                }
+
+
+            },
+            pageSize: 10,
+            batch: true,
+            schema: {
+                model: {
+
+                    id: "OrderID",
+                    fields:
+                        {
+                            OrderID: { editable: false, nullable: false },
+                            CompanyName: { editable: false, nullable: false },
+                            OrderdDate: { editable: true, nullable: false },
+                            ShippedDate: { editable: true, nullable: false },
+
+
+
+                        }
+                }
+            },
+
+
+
+
+        });
+
+
+        console.log(dataSrc);
+
+        $("#dvGrid").kendoGrid({
+
+
+            columns: [
+                { field: "OrderID", title: "訂單編號" },
+                {
+                    field: "CompanyName", title: "客戶名稱",
+                },
+                {
+                    field: "OrderDate", title: "訂購日期", template: "#= kendo.toString(kendo.parseDate(OrderDate, 'yyyy-MM-dd'), 'yyyy-MM-dd') #"
+                },
+                { field: "ShippedDate", title: "出貨日期", template: "#= kendo.toString(kendo.parseDate(ShippedDate, 'yyyy-MM-dd'), 'yyyy-MM-dd') #" },
+                { title: "明細資料", template: '<a href=/Update/Update?orderId=#= OrderID # class=k-button>訂單明細</a>' },
+                { command: ["edit", "destroy"], title: "&nbsp;", width: "250px" }
+            ],
+            editable: "inline",
+            dataSource: dataSrc,
+            sortable: true,
+            filterable: true,
+            columnMenu: true,
+            pageable: true,
+
+
+
+        });
+
+
+
+      
+
+        $("#submit").click(function () {
+
+            ///////當click按下後 撈取特定資料
+
+            var data = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        //以下其實就是$.ajax的參數
+                        type: "POST",
+                        url: '@Url.Action("DataSource", "Search")',
+                        dataType: "json",
+                        data: {
+                            //額外傳至後方的參數
+                            OrderID: function () {
+                                return $("#OrderID").val();
+                            },
+                            User: function () {
+                                return $("#User").val();
+                            },
+
+                            OrderDate: function () {
+                                return $("#OrderDate").val();
+                            },
+
+                            SentDate: function () {
+                                return $("#SentDate").val();
+                            },
+
+                            NeedDate: function () {
+                                return $("#NeedDate").val();
+                            },
+
+                            employeeName: function () {
+                                return $("#employeeName").val();
+                            },
+
+                            shipperdata: function () {
+                                return $("#shipperdata").val();
+                            },
+
+
+
+                        }
+                    }
+                },
+                pageSize: 10,
+                batch: true,
+                schema: {
+                    model: {
+
+                        id: "OrderID",
+                        fields:
+                            {
+                                OrderID: { editable: false, nullable: false },
+                                CompanyName: { editable: false, nullable: false },
+                                OrderdDate: { editable: true, nullable: false },
+                                ShippedDate: { editable: true, nullable: false },
+
+
+
+                            }
+                    }
+                },
+            });
+            //要求資料來源重新讀取(並指定切至第一頁)
+            console.log(dataSrc);
+
+            var grid = $("#dvGrid").data("kendoGrid");
+
+            grid.setOptions({
+                sortable: true,
+                filterable: true,
+                columnMenu: true,
+                pageable: true,
+                dataSource: data
+            });
+
+
+    });
+
+    });
+
+    </script>
+
+    <div id="dvGrid"></div>
 
 </body>
 </html>

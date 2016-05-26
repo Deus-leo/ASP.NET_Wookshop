@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace ASP.NET.Areas.Update.Controllers
 {
@@ -149,22 +150,15 @@ namespace ASP.NET.Areas.Update.Controllers
             orders.ShipCountry = ShipCountry;
 
             List<OrderDetails> orderdetail = db.OrderDetails.Where(x => x.OrderID.ToString().Equals(Orderid)).ToList();
+
+
+            db.OrderDetails.RemoveRange(orderdetail);
+          
+            //一律將明細資料全部刪除後，再統一新增
             //更新訂單明細資料
-            int temp = 0;
-            for (int i = 0; i < orderdetail.Count; i++)
-            {
-                ++temp;
+          
 
-                
-                orderdetail[i].ProductID = Int32.Parse(productlistdata[i]);
-                orderdetail[i].UnitPrice = decimal.Parse(price[i]);
-                orderdetail[i].Qty = short.Parse(count[i]);
-                orders.OrderDetails.Add(orderdetail[i]);
-
-
-            }
-
-            for (int i = temp; i < productlistdata.Length; i++)
+            for (int i = 0; i < productlistdata.Length; i++)
             {
                 OrderDetails orderdetails = new OrderDetails();
                 orderdetails.OrderID = Int32.Parse(Orderid);
@@ -208,7 +202,8 @@ namespace ASP.NET.Areas.Update.Controllers
                 x.ShipPostalCode,
                 x.ShipRegion,
                 x.OrderID,
-                totalMoney = x.OrderDetails.Sum(y => y.UnitPrice * y.Qty)
+                totalMoney = String.Format("{0:NT$#,0.####}", Convert.ToDecimal(x.OrderDetails.Sum(y => y.UnitPrice * y.Qty))),
+               
 
             }).Select(x => x.ToExpando()).ToList<object>();
 
@@ -221,7 +216,7 @@ namespace ASP.NET.Areas.Update.Controllers
                         x.UnitPrice,
                         x.Qty,
                         total = x.UnitPrice * x.Qty,
-                        productdata = new SelectList(productdata, "Value", "Text", x.ProductID)
+                        productdata =  db.Products.ToList()
                     }.ToExpando()
                 ).ToList();
 
@@ -229,13 +224,47 @@ namespace ASP.NET.Areas.Update.Controllers
             ViewBag.OrderData = OrderData;
             ViewBag.OrderDetailsData = orderdetails;
 
+            //填入新增商品data
+            List<Products> ProductData = db.Products.ToList();
+            //填入訂單明細detail
+            List<OrderDetails> orderDetail = db.OrderDetails.Where(x => x.OrderID.ToString() == OrderId).ToList();
 
+            ViewBag.ProductData = ProductData;
+            ViewBag.LoadOrderDetail = orderDetail;
 
 
 
 
             #endregion
         
+        }
+
+        /// <summary>
+        /// 更新在查詢UI的訂單資料
+        /// </summary>
+        /// <param name="models"></param>
+        [HttpPost]
+        public ActionResult UpdateData(String models)
+        {
+
+            var json_serializer = new JavaScriptSerializer(); //透過反序列化將每一個json的欄位讀出來
+            var routes_list = (IDictionary<string, object>)json_serializer.DeserializeObject(models);
+
+            int Orderid = (int)routes_list["OrderID"];
+        
+            String OrderDate =(String) routes_list["OrderDate"];
+            String ShippedDate = (String)routes_list["ShippedDate"];
+
+            KuasDB db = new KuasDB();
+
+            //更新訂單資料
+            Orders orders = db.Orders.Find(Orderid);
+            orders.ShippedDate = Convert.ToDateTime(ShippedDate);
+            orders.OrderDate = Convert.ToDateTime(OrderDate);
+
+            db.SaveChanges();
+
+            return null;
         }
     }
 }

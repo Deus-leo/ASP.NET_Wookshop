@@ -1,4 +1,5 @@
 ﻿using ASP.NET.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 
 namespace ASP.NET.Areas.Search.Controllers
@@ -149,6 +151,48 @@ namespace ASP.NET.Areas.Search.Controllers
 
 
 
+        }
+
+        [HttpPost]
+        public JsonResult DataSource(String OrderID, String User, DateTime? OrderDate, DateTime? SentDate, DateTime? NeedDate, String employeeName, String shipperdata)
+        {
+            KuasDB db = new KuasDB();
+
+            String OrderDate_String = OrderDate.ToString();
+            String SentDate_String = SentDate.ToString();
+            String NeedDate_String = NeedDate.ToString();
+
+            var Query_data = db.Orders.Where(x => (
+               (!string.IsNullOrEmpty(User)) ? x.Customers.CompanyName.Contains(User) : true) &&
+               ((!string.IsNullOrEmpty(OrderID)) ? x.OrderID.ToString().Equals(OrderID) : true) &&
+               ((!string.IsNullOrEmpty(employeeName)) ? x.EmployeeID.ToString().Equals(employeeName) : true) &&
+               ((!string.IsNullOrEmpty(shipperdata)) ? x.ShipperID.ToString().Equals(shipperdata) : true) &&
+               ((!string.IsNullOrEmpty(OrderDate_String)) ? (x.OrderDate.Year.Equals(OrderDate.Value.Year) && x.OrderDate.Month.Equals(OrderDate.Value.Month) && x.OrderDate.Day.Equals(OrderDate.Value.Day)) : true) &&
+               ((!string.IsNullOrEmpty(SentDate_String)) ? (x.ShippedDate.Value.Year.Equals(SentDate.Value.Year) && x.ShippedDate.Value.Month.Equals(SentDate.Value.Month) && x.ShippedDate.Value.Day.Equals(SentDate.Value.Day)) : true) &&
+               ((!string.IsNullOrEmpty(NeedDate_String)) ? (x.RequiredDate.Year.Equals(NeedDate.Value.Year) && x.RequiredDate.Month.Equals(NeedDate.Value.Month) && x.RequiredDate.Day.Equals(NeedDate.Value.Day)) : true)
+
+
+
+
+               )
+
+
+               .Select(x => new
+               {
+                   x.OrderID,
+                   CompanyName = x.Customers.CompanyName,
+                   x.OrderDate,
+                   x.ShippedDate
+
+               })
+          .ToList();
+           
+          
+
+            //var jsonSerialiser = new JavaScriptSerializer();
+            //var json = JsonConvert.SerializeObject(Query_data .ToList());
+
+            return this.Json(Query_data);
         }
     }
 }

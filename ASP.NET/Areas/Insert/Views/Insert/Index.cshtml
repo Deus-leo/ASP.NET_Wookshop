@@ -2,293 +2,435 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="~/Scripts/jquery-1.9.1.min.js"></script>
 
 <h2>Index</h2>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+
+</head>
+<body>
+    <div class="container">
+        <form method="POST" action="Index" id="registerForm">
+            <label>新增訂單</label>
+            <table class="table table-responsive" border-collapse="collapse">
+
+                <tr>
+                    <td>
+                        <label>*客戶名稱</label>
+                    </td>
+                    <td colspan="3">
+                        @Html.DropDownList("cuslistdata", (IEnumerable<SelectListItem>)ViewBag.cusdata, new { required = "required validationMessage='請選擇客戶名稱'" })
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>*負責員工名稱</label>
+                    </td>
+                    <td colspan="3">
+
+                        @Html.DropDownList("emplistdata", (IEnumerable<SelectListItem>)ViewBag.empdata, new { required = "required" })
+
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>*訂購日期</label>
+                    </td>
+                    <td>
+                        <input type="date" name="OrderDate" required validationmessage="請輸入訂購日期" id="OrderDate" data-greaterdate-msg='出貨日期不可以小於訂購日期' />
+                    </td>
+
+                    <td>
+                        <label>*出貨日期</label>
+                    </td>
+                    <td>
+                        <input type="date" name="SentDate" required validationmessage="請輸入出貨日期" id="SentDate" onchange="vaildate()" data-greaterdate-msg='出貨日期不可以小於訂購日期' />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>*需要日期</label>
+                    </td>
+                    <td>
+                        <input type="date" name="NeedDate" required validationmessage="請輸入需要日期" id="NeedDate" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>出貨公司名稱</label>
+                    </td>
+                    <td colspan="3">
+                        @Html.DropDownList("shipplistdata", (IEnumerable<SelectListItem>)ViewBag.shippdata, new { required = "required validationMessage=please" })
+
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>運費</label>
+                    </td>
+                    <td colspan="3">
+
+                        <input type="text" name="Shipment" id="Shipment">
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>出貨國家</label>
+                    </td>
+                    <td>
+                        <input type="text" name="ShipCountry" id="ShipCountry">
+
+                    </td>
+
+
+                    <td>
+                        <label>出貨城市</label>
+                    </td>
+
+                    <td>
+                        <input type="text" name="ShipCity" id="ShipCity">
+
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>出貨地區</label>
+                    </td>
+                    <td>
+
+                        <input type="text" name="ShipArea" id="ShipArea">
+                    </td>
+
+                    <td>
+
+                        <label>郵遞區號</label>
+                    </td>
+                    <td>
+
+                        <input type="text" name="Zipcode" id="Zipcode">
+
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <label>出貨地址</label>
+                    </td>
+
+                    <td>
+
+                        <input type="text" name="ShipAddress" id="ShipAddress">
+
+                    </td>
+                    <td>
+
+                        <label>出貨說明</label>
+                    </td>
+
+                    <td>
+
+                        <input type="text" name="ShipDes" id="ShipDes">
+
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <label>訂單金額總計</label>
+                    </td>
+                    <td colspan="3">
+
+                        <input type="text" name="OrderMoney" id="OrderMoney" disabled="disabled">
+
+                    </td>
+
+                </tr>
 
 
 
-<div class="container">
-    <form method="POST" action="Index">
-        <label>新增訂單</label>
-        <table class="table table-striped" border-collapse="collapse">
-            
-            <tr>
-                <td>
-                    <label>*客戶名稱</label>
-                </td>
-                <td colspan="3">
-                    @Html.DropDownList("cuslistdata", (IEnumerable<SelectListItem>)ViewBag.cusdata, new { required = "required" })
+                <tr>
+                    <td></td>
 
 
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>*負責員工名稱</label>
-                </td>
-                <td colspan="3">
+                    <td colspan="3">
+                        <input type="submit" id="submit" class="btn btn-default" value="存檔">
+                        <input type="reset" id="back" class="btn btn-default" value="回前一頁">
 
-                    @Html.DropDownList("emplistdata", (IEnumerable<SelectListItem>)ViewBag.empdata, new { required = "required" })
-
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label>*訂購日期</label>
-                </td>
-                <td>
-                    <input type="date" name="OrderDate" required />
-                </td>
-
-                <td>
-                     <label>出貨日期</label>
-                </td>
-                <td>
-                    <input type="date" name="SentDate" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>*需要日期</label>
-                </td>
-                <td>
-                    <input type="date" name="NeedDate" required />
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label>出貨公司名稱</label>
-                </td>
-                <td colspan="3">
-                    @Html.DropDownList("shipplistdata", (IEnumerable<SelectListItem>)ViewBag.shippdata)
+                    </td>
+                </tr>
+            </table>
+            </br>
+            <input type="button" class="btn btn-default" value="+新增商品" onclick="Addrow()">
+            <table class="table table-striped" id="ProductDetail" border-collapse="collapse">
 
 
-                </td>
-            </tr>
+                <tr>
+                    <th>商品</th>
+                    <th>單價</th>
+                    <th>數量</th>
+                    <th>小計</th>
 
-            <tr>
-                <td>
-                    <label>運費</label>
-                </td>
-                <td colspan="3">
-                    
-                    <input type="text" name="Shipment">
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label>出貨國家</label>
-                </td>
-                <td>
-                    <input type="text" name="ShipCountry">
-
-                </td>
-
-           
-                <td>
-                    <label>出貨城市</label>
-                </td>
-                
-                <td>
-                    <input type="text" name="ShipCity">
-
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label>出貨地區</label>
-                </td>
-                <td>
-
-                    <input type="text" name="ShipArea">
-                </td>
-
-                <td>
-
-                    <label>郵遞區號</label>
-                </td>
-                <td>
-
-                    <input type="text" name="Zipcode">
-
-
-                </td>
-            </tr>
-
-
-            <tr>
-                <td>
-                    <label>出貨地址</label>
-                </td>
-
-                <td>
-
-                    <input type="text" name="ShipAddress">
-
-                </td>
-                <td>
-
-                    <label>出貨說明</label>
-                </td>
-
-                <td>
-
-                    <input type="text" name="ShipDes">
-
-
-                </td>
-            </tr>
-
-
-            <tr>
-                <td>
-                    <label>訂單金額總計</label>
-                </td>
-                <td colspan="3">
-
-                    <input type="text" name="OrderMoney" id="OrderMoney" disabled="disabled">
-
-                </td>
-        
-            </tr>
+                </tr>
 
 
 
-            <tr>
-                <td></td>
-               
 
-                <td colspan="3">
-                    <input type="submit" class="btn btn-default" value="存檔">
-                    <input type="reset" class="btn btn-default" value="回前一頁">
+            </table>
+        </form>
 
-                </td>
-            </tr>
-        </table>
-        </br>
-        <input type="button" class="btn btn-default" value="+新增商品" onclick="insert()">
-        <table class="table table-striped" id="Jerry" border-collapse="collapse">
+       
+        @if (ViewBag.success != null)
+        {
+            <script>alert("新增成功");</script>
+        }
 
-         <tr>
-             <td>商品</td> 
-             <td>單價</td>
-             <td>數量</td>
-             <td>小計</td>
-             <td></td>
+        @*Kendo UI 樣式設計*@
+        <script>
+            var money = 0;
+
+            $(document).ready(function () {
+                $("#cuslistdata").kendoDropDownList();
+                $("#emplistdata").kendoDropDownList();
+                $("#shipplistdata").kendoDropDownList();
+
+                $("#OrderDate").kendoDatePicker({
+                    animation: {
+                        close: {
+                            effects: "fadeOut zoom:out",
+                            duration: 300
+                        },
+                        open: {
+                            effects: "fadeIn zoom:in",
+                            duration: 300
+                        }
+                    },
+                    format: "yyyy/MM/dd"
+                });
+
+                $("#SentDate").kendoDatePicker({
+                    animation: {
+                        close: {
+                            effects: "fadeOut zoom:out",
+                            duration: 300
+                        },
+                        open: {
+                            effects: "fadeIn zoom:in",
+                            duration: 300
+                        }
+                    },
+                    format: "yyyy/MM/dd"
+                });
+
+                $("#NeedDate").kendoDatePicker({
+                    animation: {
+                        close: {
+                            effects: "fadeOut zoom:out",
+                            duration: 300
+                        },
+                        open: {
+                            effects: "fadeIn zoom:in",
+                            duration: 300
+                        }
+                    },
+                    format: "yyyy/MM/dd"
+                });
 
 
-         </tr>
-            
-           
-         <tr id="order_detail">
-             <td>@Html.DropDownList("productlistdata", (IEnumerable<SelectListItem>)ViewBag.productdata)</td>
-             <td class="tbprice"><input type="text" id="price" name="price"></td>
-             <td class="tbcount"><input type="text" id="count" name="count"></td>
-             <td class="tbtotal"><label id="total" name="total"></label></td>
-             <td class="tbnone"></td>
+            });
 
 
-         </tr>
-            
-         </table>
-</form>
-  
-    <script>
-        
-      
-        var money = 0;
-        $(document).ready(function () {
-            $("#productlistdata").change(function () {
-                console.log("test");
+            $("#ShipCountry").kendoAutoComplete();
+            $("#ShipCity").kendoAutoComplete();
+            $("#ShipArea").kendoAutoComplete();
+            $("#Zipcode").kendoAutoComplete();
+            $("#ShipAddress").kendoAutoComplete();
+            $("#ShipDes").kendoAutoComplete();
+            $("#OrderMoney").kendoAutoComplete();
+            $("#Shipment").kendoAutoComplete();
+            $("#submit").kendoButton({
 
-                var product_id = $("#productlistdata").val();
+            });
+
+          
+            $("#back").kendoButton({
+
+            });
+
+            var count = 1;
+            function Addrow() {
+
+                var ProductDetail = document.getElementById("ProductDetail").tBodies[0];
+                var tr = document.createElement("tr");
+                //製造select
+                var select_td = document.createElement("td");
+
+                var select = document.createElement("select");
+                select.setAttribute("id", "Select" + count);
+                select.setAttribute("onchange", "changeProduct(" + count + ")");
+                select.setAttribute("name","productlistdata");
+                select.appendChild(new Option("---請選擇商品---", ""));
+         @foreach (var item in (List<ASP.NET.Models.Products>)ViewBag.ProductData)
+            {
+                @: select.appendChild(new Option("@item.ProductName", "@item.ProductID"));
+                                    
+            }
+
+            select_td.appendChild(select);
+
+            //製造price
+            var pricetd = document.createElement("td");
+            var price_input = document.createElement("input");
+            price_input.setAttribute("id", "Price" + count);
+            price_input.setAttribute("name","price");
+            price_input.setAttribute("type", "text");
+            pricetd.appendChild(price_input);
+
+
+            //製造count
+            var count_td = document.createElement("td");
+            var count_input = document.createElement("input");
+            count_input.setAttribute("id", "Count" + count);
+            count_input.setAttribute("type", "text");
+            count_input.setAttribute("name","count");
+            count_input.setAttribute("oninput", "changeTotal(" + count + ")");
+
+            count_td.appendChild(count_input);
+
+
+            //製造total
+            var total_td = document.createElement("td");
+            var total_input = document.createElement("input");
+            total_input.setAttribute("id", "Total" + count);
+            total_input.setAttribute("class", "tbtotal");
+
+            total_input.setAttribute("type", "text");
+            total_input.setAttribute("disabled", "disabled");
+            total_td.appendChild(total_input);
+
+
+
+
+            //將 select price count total 放入tr內
+            tr.appendChild(select_td);
+            tr.appendChild(pricetd);
+            tr.appendChild(count_td);
+            tr.appendChild(total_td);
+
+            ProductDetail.appendChild(tr);
+
+            $("#Select" + count).kendoComboBox();
+
+            $("#Count" + count).kendoAutoComplete();
+            $("#Total" + count).kendoNumericTextBox({ format: "c2" });
+            $("#Price" + count).kendoNumericTextBox({ format: "c2" });
+
+            count++;
+
+
+
+            }
+
+            //選擇商品名稱自動改變價格欄位
+            function changeProduct(row_count) {
+
+                var product_value = $("#Select" + row_count).val();
 
                 $.ajax({
-                    url: "Product_Price",
+                    url: '@Url.Action("Product_Price", "Insert")',
                     type: "POST",
                     dataType: 'text',
                     data: {
-                        id : product_id
+                        id: product_value
                     },
                     success: function (msg) {
-                        $("#price").val(msg);
+                        $("#Price" + row_count).kendoNumericTextBox().val(msg).kendoNumericTextBox().trigger();
                         console.log(msg);
                     }
 
                 });
 
-            });
+            }
+
+            //輸入價格自動計算小計欄位
+            function changeTotal(row_count) {
+                var product_value = $("#Price" + row_count).val();
+                var Count_value = $("#Count" + row_count).val();
+                var Total = $("#Total" + row_count).val(product_value * Count_value).kendoNumericTextBox().trigger();
 
 
-            $("#count").change(function () {
-                var price = $("#price").val();
-                var count = $("#count").val();
+            }
+        </script>
 
-                var total = price * count;
-                console.log(total);
+      
 
-                $("#total").text(total);
-                money += total;
-                $("#OrderMoney").val(money);
-                
-            });
+    </div>
+</body>
 
-        });
 
-        
-        function insert()
-        {
-          var temp = $('#order_detail').clone();
-         
-            temp.find("select").change(function () {
-                var product_id = temp.find("select").val();
-                console.log(product_id);
-                $.ajax({
-                    url: "Product_Price",
-                    type: "POST",
-                    dataType: 'text',
-                    data: {
-                        id: product_id
-                    },
-                    success: function (msg) {
-                        temp.find("#price").val(msg);
+
+</html>
+@*表單驗證機制*@
+<script type="text/javascript">
+    var validator = $("#registerForm").kendoValidator().data("kendoValidator");
+
+  
+
+    function vaildate()
+    {
+        var container = $("#registerForm");
+        kendo.init(container);
+        container.kendoValidator({
+            rules: {
+                greaterdate: function (input) {
+
+                    console.log(input);
+                    var OrderDate = $("#OrderDate").val();
+                    var SentDate = $("#SentDate").val();
+
+
+                    if (OrderDate > SentDate) {
+                        console.log("錯誤");
+
+                        return false;
+                    }
+
+                    else {
+                        console.log("正確");
+                        return true;
 
                     }
 
-                });
-            });
-
-            temp.find("#count").change(function () {
 
 
-                var price = temp.find("#price").val();
-                var count = temp.find("#count").val();
-
-                var total = price * count;
-                console.log(total);
-
-                temp.find("#total").text(total);
-                money += total;
-                console.log("Now "+money);
-                $("#OrderMoney").val(money);
-
-            });
-            temp.html().replace("productlistdata", "JerrySelect")
-            $("#Jerry").append(temp);
 
 
-        }
-    </script>
-    @if(ViewBag.success !=null)
-    {
-     <script>alert("新增成功");</script>
+
+
+
+                }
+            }
+        });
+        
     }
-</div>
+
+
+
+</script>

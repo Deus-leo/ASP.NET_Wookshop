@@ -32,15 +32,15 @@ namespace ASP.NET.Models
         [Column(TypeName = "money")]
         public decimal Freight { get; set; }
 
-        [Required]
+        
         [StringLength(40)]
         public string ShipName { get; set; }
 
-        [Required]
+
         [StringLength(60)]
         public string ShipAddress { get; set; }
 
-        [Required]
+       
         [StringLength(15)]
         public string ShipCity { get; set; }
 
@@ -50,7 +50,7 @@ namespace ASP.NET.Models
         [StringLength(10)]
         public string ShipPostalCode { get; set; }
 
-        [Required]
+       
         [StringLength(15)]
         public string ShipCountry { get; set; }
 
